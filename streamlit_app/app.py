@@ -1,10 +1,15 @@
 import sys
+from pathlib import Path
+
+# 🧭 Ensure project root is in sys.path so `from src.x import y` always works
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import os
 import time
-from pathlib import Path
 import streamlit as st
 import pandas as pd
-import logging
 
 from src.io_utils import extract_text_from_pdf, load_text_source
 from src.fetch_paper import fetch_paper_text
@@ -14,9 +19,6 @@ from src.get_coordinates import add_coordinates
 from src.normalize_diseases import normalize_diseases
 from src.write_output import save_output
 from src.db_utils import insert_mentions_to_db
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-logging.basicConfig(level=logging.INFO)
 
 # ---------------- Page Config ----------------
 st.set_page_config(page_title="Paper2KB", layout="wide")

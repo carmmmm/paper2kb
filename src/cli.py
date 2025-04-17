@@ -1,3 +1,11 @@
+import sys
+from pathlib import Path
+
+# 🧭 Ensure project root is in sys.path so `from src.x import y` always works
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import argparse
 import logging
 import os
@@ -5,13 +13,13 @@ import time
 from dotenv import load_dotenv
 
 from Bio import Entrez
-from extract_genes import extract_gene_disease_mentions, load_hgnc_reference
-from get_hgnc_metadata import enrich_with_hgnc
-from get_coordinates import add_coordinates
-from normalize_diseases import normalize_diseases
-from write_output import save_output
-from io_utils import load_text_source, infer_output_path
-from opentargets_utils import get_opentargets_diseases
+from src.extract_genes import extract_gene_disease_mentions, load_hgnc_reference
+from src.get_hgnc_metadata import enrich_with_hgnc
+from src.get_coordinates import add_coordinates
+from src.normalize_diseases import normalize_diseases
+from src.write_output import save_output
+from src.io_utils import load_text_source, infer_output_path
+from src.opentargets_utils import get_opentargets_diseases
 
 load_dotenv()
 Entrez.email = os.environ.get("ENTREZ_EMAIL", "fallback@example.com")
