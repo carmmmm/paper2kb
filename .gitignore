@@ -1,0 +1,27 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtualenv
+.venv*/
+env/
+ENV/
+
+# Output data
+data/outputs/*
+*.csv
+*.json
+*.db
+
+# Secrets
+.env
+
+# IDE stuff
+.vscode/
+.idea/
+.DS_Store
+
+# Test/cache files
+.pytest_cache/
+*.log

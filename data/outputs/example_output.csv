@@ -1,0 +1,10 @@
+symbol,original_mention,diseases,hgnc_id,name,alias_symbol,hg38_chr,hg38_start,hg38_end,hg19_chr,hg19_start,hg19_end
+MGP,MGP,,HGNC:7060,matrix Gla protein,,12,14880864,14885857,12,15033798,15033799
+SMC3,BAM,,HGNC:2468,structural maintenance of chromosomes 3,HCAP; BAM; SMC3L1; bamacan,10,110567684,110606048,10,112327442,112327443
+MTOR,MTOR,tubulopathy; dilated cardiomyopathy,HGNC:3942,mechanistic target of rapamycin kinase,RAFT1; RAPT1; FLJ44809,1,11106535,11262556,1,11166592,11166593
+RRAGD,RRAGD,,HGNC:19903,Ras related GTP binding D,DKFZP761H171; bA11D8.2.1,6,89364616,89412273,6,90074335,90074336
+HNF1A,HNF1A,mody,HGNC:11621,HNF1 homeobox A,HNF1; LFB1; HNF1α,12,120978543,121002512,12,121416346,121416347
+APOL1,APOL1,kidney disease; proteinuria; focal segmental glomerulosclerosis; sepsis,HGNC:618,apolipoprotein L1,,22,36253071,36267530,22,36649117,36649118
+HERC2,HERC2,,HGNC:4868,HECT and RLD domain containing E3 ubiquitin protein ligase 2,jdf2; p528; D15F37S1,15,28111040,28322179,15,28356186,28356187
+NPHS2,NPHS2,kidney disease; nephrotic syndrome; proteinuria; focal segmental glomerulosclerosis; hypertension,HGNC:13394,"NPHS2 stomatin family member, podocin",SRN1; PDCN,1,179550539,179575952,1,179519674,179519675
+COL4A3,COL4A3,hypertension; alport syndrome,HGNC:2204,collagen type IV alpha 3 chain,,2,227164624,227314792,2,228029340,228029341

@@ -1,0 +1,9 @@
+name: paper2kb
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10.13
+  - pip
+  - pip:
+      - -r requirements.txt

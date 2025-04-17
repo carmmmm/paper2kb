@@ -1,2 +1,286 @@
-# paper2kb
-From publication to structured knowledgebase.
+# 📘 Paper2KB: Biomedical Knowledgebase Extractor
+
+![Python](https://img.shields.io/badge/python-3.10+-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+
+Paper2KB is a modular, end-to-end pipeline that ingests biomedical literature—from PubMed 
+abstracts to full-text PDFs—and extracts gene-disease relationships using named entity 
+recognition and HGNC-backed matching. It enriches results with official gene metadata, 
+genomic coordinates, and MONDO-normalized disease concepts, producing clean, structured 
+outputs ready for downstream analysis, database integration, and clinical curation workflows.
+
+---
+
+## 🚀 What It Does
+
+### 💾 Fetch Paper Text
+- Accepts **PMID**, raw text, or **PDF**
+- Retrieves full text using **NCBI Entrez** or **Europe PMC**
+
+### 🧬 Gene-Disease Extraction
+- Named Entity Recognition (SciSpacy models)
+- HGNC fallback matching to maximize recall
+- Extracts gene–disease pairs with sentence-level context
+
+### 🧠 Metadata Enrichment
+- HGNC name, ID, aliases
+- Genome coordinates (hg19 + hg38 via Ensembl REST)
+- Disease normalization to MONDO
+
+### 📤 Export + Review
+- Choose specific columns and rows to export 
+- Save output as JSON or CSV with flattened, human-readable formatting 
+- View and interactively explore data in a Streamlit interface
+
+### 🧱 SQLite Knowledgebase
+- Insert extracted mentions into a mock relational SQLite database 
+  - Tables: `hgnc_gene`, `gene_alias`, `disease`, `gene_disease`, `coordinates`
+- Supports deduplication, alias tracking, and normalized relationships 
+- View current DB state directly from the UI or via SQL queries 
+- Includes prebuilt schema and example queries for integration into real pipelines
+- Schema and ER diagram included
+
+### 🧭 Access Methods
+- Command-Line Interface (CLI)
+  - Fetch + parse papers by PMID, PDF, or Text
+  - Output to JSON/CSV
+- Streamlit Web App
+  - Full UI for input + preview
+  - Select rows/columns to save
+  - Insert into SQLite DB
+  - View database contents live
+
+---
+
+## 🏃 Getting Started 
+
+### 📁 Directory Structure
+
+```bash
+paper2kb/
+├── data/
+│   ├── outputs/               # Saved JSON/CSV and skipped genes
+│   └── reference/             # HGNC reference files
+├── scripts/
+│   ├── outputs/
+│   │   └── paper2kb.db     #Auto-generated SQLite knowledgebase from gene-disease metadata
+│   │── run_pipeline.sh     # Optional bash runner
+│   └── update_hgnc.py      # Refresh HGNC reference
+│── sql/
+│   ├── schema.sql          # SQLite schema
+│   ├── sample_queries.sql  # Example queries
+│   └── schema_diagram.png  # Schema ER diagram
+├── src/
+│   ├── cli.py                 # CLI entry point
+│   ├── extract_genes.py       # NER + fallback logic
+│   ├── fetch_paper.py         # Text retrieval
+│   ├── get_hgnc_metadata.py   # HGNC metadata enrichment
+│   ├── get_coordinates.py     # Ensembl coordinate lookup
+│   ├── normalize_diseases.py  # MONDO normalization
+│   ├── io_utils.py            # Text loading, output path inference
+│   ├── write_output.py        # CSV/JSON export
+│   ├── opentargets_utils.py   # Disease links (fallback)
+│   └── db_utils.py            # Database insert functions
+├── streamlit_app/
+│   └── app.py                 # Interactive Streamlit app
+├── tests/
+│   ├── test_end_to_end.py
+│   ├── test_extract_genes.py
+│   ├── test_fetch_paper.py
+│   ├── test_get_coordinates.py
+│   ├── test_get_metadata.py
+│   ├── test_normalize_diseases.py
+│   ├── test_write_output.py
+│   └── tests_cli.py
+├── .env                      # Local secrets (excluded)
+├── .env.example             # Template for .env
+├── .gitignore               # See below
+├── environment.yml          # Conda env file
+├── requirements.txt         # pip dependencies
+├── pyproject.toml           # Package metadata
+├── setup.py                 # Editable pip install config
+└── README.md
+```
+
+### First Steps
+ 1. First, clone Paper2KB to your local machine. Make sure you have Python 3.10+ installed.
+
+        ```
+        git clone https://github.com/yourusername/paper2kb.git
+        cd paper2kb
+        ```
+ 2. Environment Setup
+
+    OPTION 1: With pip + virtualenv
+
+    ```
+    python3.10 -m venv .venv310
+    source .venv310/bin/activate
+    pip install -r requirements.txt
+    ```
+    
+    OPTION 2: With Conda
+
+    ```
+    conda env create -f environment.yml
+    conda activate paper2kb
+    ```
+    
+ 3. To use NCBI Entrez API, create a .env file in the project root:
+
+    ```
+    cp .env.example .env
+    ```
+    
+    Then edit it with your email.
+
+    ```
+    ENTREZ_EMAIL=your@email.com
+    ```
+
+Now you must decide whether you want to access via the StreamLit App or the CLI.
+
+| Access Method     | Purpose                                      | UI/UX        | Best For                      |
+|-------------------|----------------------------------------------|--------------|-------------------------------|
+| **Streamlit App** | Full-featured interactive interface          | Graphical UI | Exploratory use, customization |
+| **CLI Tool**      | Fast extraction pipeline with minimal setup  | Command-line | Automation, scripting         |
+
+### 🌟From the StreamLit App 
+1. Start the App
+
+    ```
+   streamlit run streamlit_app/app.py
+   ```
+   
+2. Choose input 
+   - PubMed ID (e.g. 38790019)
+   - Paste in text 
+   - Upload a PDF
+
+3. Customize your output 
+   - Select rows + columns 
+   - Export to CSV/JSON 
+   - Optionally insert into SQLite DB
+
+4. Database Preview 
+   - View DB contents via sidebar 
+   - Confirm gene/disease links visually
+
+    
+### 💻 From the CLI
+
+Run a complete extraction pipeline directly from the terminal:
+
+```
+paper2kb --pmid 38790019 --format csv
+```
+
+Or use a local file:
+
+```
+paper2kb --localfile path/to/paper.pdf --format json
+```
+
+Other CLI flags:
+
+- `--mode hybrid` (default) or `--mode ml`
+- `--build hg19`, `hg38`, or `both`
+- `--output path/to/file.csv`
+- `--debug` for verbose logs
+
+Output will be saved to `data/outputs/`, along with a list of skipped genes.
+
+---
+
+## 🧱 Understanding the Database Structure
+
+Paper2KB includes a **relational SQLite database** (`paper2kb.db`) that organizes all extracted information into normalized tables. This design supports easy joins, deduplication, and scalable querying.
+
+The schema consists of:
+
+- `hgnc_gene`: Stores the official HGNC ID and gene name
+- `gene_alias`: Captures known aliases for each gene
+- `disease`: Lists all unique disease mentions (normalized or raw)
+- `gene_disease`: Many-to-many mapping between genes and diseases
+- `coordinates`: Stores HG19 and HG38 genomic coordinates for each gene
+
+The schema diagram is included in [`sql/schema_diagram.png`](sql/schema_diagram.png), and all definitions are written out in [`sql/schema.sql`](sql/schema.sql).
+
+---
+
+### ✅ Example Queries
+
+```sql
+-- 1. HGNC ID and disease connection
+SELECT g.hgnc_id, d.disease_name
+FROM hgnc_gene g
+         JOIN gene_disease gd ON g.hgnc_id = gd.hgnc_id
+         JOIN disease d ON gd.disease_id = d.disease_id;
+
+-- Example Results 
+hgnc_id     disease_name                      
+----------  ----------------------------------
+HGNC:3942   tubulopathy                       
+HGNC:3942   dilated cardiomyopathy            
+HGNC:11621  mody                              
+HGNC:618    kidney disease                    
+HGNC:618    proteinuria                       
+HGNC:618    focal segmental glomerulosclerosis
+HGNC:618    sepsis                            
+HGNC:13394  kidney disease                    
+HGNC:13394  nephrotic syndrome                
+HGNC:13394  proteinuria                       
+HGNC:13394  focal segmental glomerulosclerosis
+HGNC:13394  hypertension                      
+HGNC:2204   hypertension                      
+HGNC:2204   alport syndrome          
+
+-- 2. HGNC Gene Name and aliases
+SELECT g.gene_name, GROUP_CONCAT(a.alias, ', ') AS aliases
+FROM hgnc_gene g
+         LEFT JOIN gene_alias a ON g.hgnc_id = a.hgnc_id
+GROUP BY g.gene_name;
+
+-- Example Results 
+gene_name                                                     aliases                                               
+------------------------------------------------------------  ------------------------------------------------------
+HECT and RLD domain containing E3 ubiquitin protein ligase 2  D15F37S1, D15F37S1, jdf2, jdf2, p528, p528            
+HNF1 homeobox A                                               HNF1, HNF1, HNF1α, HNF1α, LFB1, LFB1                  
+NPHS2 stomatin family member, podocin                         PDCN, PDCN, SRN1, SRN1                                
+Ras related GTP binding D                                     DKFZP761H171, DKFZP761H171, bA11D8.2.1, bA11D8.2.1    
+apolipoprotein L1                                                                                                   
+collagen type IV alpha 3 chain                                                                                      
+matrix Gla protein                                                                                                  
+mechanistic target of rapamycin kinase                        FLJ44809, FLJ44809, RAFT1, RAFT1, RAPT1, RAPT1        
+structural maintenance of chromosomes 3                       BAM, BAM, HCAP, HCAP, SMC3L1, SMC3L1, bamacan, bamacan
+
+```
+
+---
+
+## 🧪 Testing
+
+Includes:
+- Functional unit tests for each module
+- End-to-end test: NER → enrichment → coordinate mapping → MONDO normalization
+- CLI test coverage via `subprocess`
+
+Run unit tests and CLI tests with:
+
+```bash
+pytest -v
+```
+
+---
+
+## 👩‍💻 Author
+
+**Carmen Montero**  
+Clinical Technology + Software Engineer
+
+---
+
+## 📜 License
+
+MIT License
