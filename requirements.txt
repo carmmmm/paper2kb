@@ -11,8 +11,11 @@ charset-normalizer==3.4.1
 click==7.1.2
 conllu==6.0.0
 cymem==2.0.11
+
+# SciSpacy models
 en_ner_bc5cdr_md @ https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.4.0/en_ner_bc5cdr_md-0.4.0.tar.gz#sha256=694a32a6c3d44ae82f3a6bdf67b3f956a82a4803992a361d537eb6bffa1b549a
 en_ner_jnlpba_md @ https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.4.0/en_ner_jnlpba_md-0.4.0.tar.gz#sha256=b58a302c4492e46de7a6ea2660c365c2c5a42d1caf8e3bb2a78b81f2fa126040
+
 exceptiongroup==1.2.2
 gitdb==4.0.12
 GitPython==3.1.44
@@ -31,7 +34,6 @@ nmslib==2.1.1
 numpy==1.23.5
 packaging==24.2
 pandas==2.2.3
--e git+https://github.com/carmmmm/paper2kb.git@639bfc2c4c43416ec8ca119bfb5ead6b95740381#egg=paper2kb
 pathlib_abc==0.1.1
 pathy==0.11.0
 pillow==11.2.1
