@@ -12,7 +12,7 @@ def split_safe(val):
 
 # Load cleaned CSV
 base = Path(__file__).resolve().parents[1]
-csv_path = base / "data" / "outputs" / "streamlit_output.csv"
+csv_path = base / "data" / "outputs" / "example_output.csv"
 df = pd.read_csv(csv_path, sep=",", quotechar='"', skipinitialspace=True, on_bad_lines="warn")
 
 # Set up DB

@@ -115,7 +115,7 @@ paper2kb/
     OPTION 1: With pip + virtualenv
 
     ```
-    python3.10 -m venv .venv310
+    python -m venv .venv310
     source .venv310/bin/activate
     pip install -r requirements.txt
     ```
@@ -139,6 +139,19 @@ paper2kb/
     nano .env
     ENTREZ_EMAIL=your@email.com
     ```
+  
+ 4. Populate the SQLite Database (Optional but Recommended)
+    To initialize the database with example data from example_output.csv, run:
+    ```
+    python scripts/load_sqlite_db.py
+    ```
+
+    You’ll see a confirmation like:
+    
+    ```
+    ✅ SQLite DB created at /absolute/path/to/paper2kb/data/outputs/paper2kb.db
+    ```
+
 
 Now you must decide whether you want to access via the StreamLit App or the CLI.
 
