@@ -10,11 +10,7 @@ recognition and HGNC-backed matching. It enriches results with official gene met
 genomic coordinates, and MONDO-normalized disease concepts, producing clean, structured 
 outputs ready for downstream analysis, database integration, and clinical curation workflows.
 
-<img width="956" alt="Screenshot 2025-04-18 at 12 19 08 AM" src="https://github.com/user-attachments/assets/17b8a836-37b6-461b-ae96-e5a80b4ba858" />
-
----
-## 📺 Video Tutorial 
-
+<img width="956" alt="Screenshot 2025-04-18 at 12 19 08 AM" src="https://github.com/user-attachments/assets/3c08542e-e51a-498b-877e-e5a4a1d59ffd" />
 
 
 ---
@@ -39,6 +35,8 @@ outputs ready for downstream analysis, database integration, and clinical curati
 - Choose specific columns and rows to export 
 - Save output as JSON or CSV with flattened, human-readable formatting 
 - View and interactively explore data in a Streamlit interface
+  <img width="647" alt="Screenshot 2025-04-18 at 12 18 45 AM" src="https://github.com/user-attachments/assets/744370f0-5dec-4d0c-bae2-bdf82331672a" />
+
 
 ### 🧱 SQLite Knowledgebase
 - Insert extracted mentions into a mock relational SQLite database 
@@ -57,6 +55,9 @@ outputs ready for downstream analysis, database integration, and clinical curati
   - Select rows/columns to save
   - Insert into SQLite DB
   - View database contents live
+ 
+<img width="979" alt="Screenshot 2025-04-18 at 1 39 10 AM" src="https://github.com/user-attachments/assets/839428ef-6512-45d7-8349-779f493fd35d" />
+
 
 ---
 
@@ -184,16 +185,23 @@ Now you must decide whether you want to access via the StreamLit App or the CLI.
    - Upload a PDF
 
 3. Customize your output 
-   - Select rows + columns 
-   - Export to CSV/JSON 
+   - Select rows + columns
+<img width="647" alt="Screenshot 2025-04-18 at 12 18 45 AM" src="https://github.com/user-attachments/assets/ecbf43aa-11f5-49e6-a50d-df14fe2c1b19" />
+
+
+   - Export to CSV/JSON
+<img width="972" alt="Screenshot 2025-04-18 at 1 38 41 AM" src="https://github.com/user-attachments/assets/b049575d-eacc-45ec-98be-6902e8b72cf9" />
+
+
    - Optionally insert into SQLite DB
-  <img width="647" alt="Screenshot 2025-04-18 at 12 18 45 AM" src="https://github.com/user-attachments/assets/ecbf43aa-11f5-49e6-a50d-df14fe2c1b19" />
+<img width="979" alt="Screenshot 2025-04-18 at 1 43 24 AM" src="https://github.com/user-attachments/assets/c90c84e9-6c2d-4d85-8047-82db0ef59af1" />
 
-     
 
-4. Database Preview 
+5. Database Preview 
    - View DB contents via sidebar 
    - Confirm gene/disease links visually
+
+<img width="977" alt="Screenshot 2025-04-18 at 1 43 53 AM" src="https://github.com/user-attachments/assets/37ca3c71-4a7b-4493-a9ce-096038d73dd9" />
 
 
 ### 💻 From the CLI
