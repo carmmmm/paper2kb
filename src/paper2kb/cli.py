@@ -13,13 +13,13 @@ import time
 from dotenv import load_dotenv
 
 from Bio import Entrez
-from src.extract_genes import extract_gene_disease_mentions, load_hgnc_reference
-from src.get_hgnc_metadata import enrich_with_hgnc
-from src.get_coordinates import add_coordinates
-from src.normalize_diseases import normalize_diseases
-from src.write_output import save_output
-from src.io_utils import load_text_source, infer_output_path
-from src.opentargets_utils import get_opentargets_diseases
+from paper2kb.extract_genes import extract_gene_disease_mentions, load_hgnc_reference
+from paper2kb.get_hgnc_metadata import enrich_with_hgnc
+from paper2kb.get_coordinates import add_coordinates
+from paper2kb.normalize_diseases import normalize_diseases
+from paper2kb.write_output import save_output
+from paper2kb.io_utils import load_text_source, infer_output_path
+from paper2kb.opentargets_utils import get_opentargets_diseases
 
 load_dotenv()
 Entrez.email = os.environ.get("ENTREZ_EMAIL", "fallback@example.com")

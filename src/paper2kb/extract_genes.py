@@ -1,5 +1,5 @@
 import spacy
-from opentargets_utils import get_opentargets_diseases
+from paper2kb.opentargets_utils import get_opentargets_diseases
 from pathlib import Path
 import csv
 import logging

@@ -2,7 +2,7 @@ import logging
 import os
 import fitz
 
-from fetch_paper import fetch_paper_text
+from paper2kb.fetch_paper import fetch_paper_text
 
 def extract_text_from_pdf(uploaded_file):
     with fitz.open(stream=uploaded_file.read(), filetype="pdf") as doc:

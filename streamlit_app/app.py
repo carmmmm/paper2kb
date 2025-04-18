@@ -11,14 +11,14 @@ import time
 import streamlit as st
 import pandas as pd
 
-from src.io_utils import extract_text_from_pdf, load_text_source
-from src.fetch_paper import fetch_paper_text
-from src.extract_genes import extract_gene_disease_mentions, load_hgnc_reference
-from src.get_hgnc_metadata import enrich_with_hgnc
-from src.get_coordinates import add_coordinates
-from src.normalize_diseases import normalize_diseases
-from src.write_output import save_output
-from src.db_utils import insert_mentions_to_db
+from paper2kb.io_utils import extract_text_from_pdf, load_text_source
+from paper2kb.fetch_paper import fetch_paper_text
+from paper2kb.extract_genes import extract_gene_disease_mentions, load_hgnc_reference
+from paper2kb.get_hgnc_metadata import enrich_with_hgnc
+from paper2kb.get_coordinates import add_coordinates
+from paper2kb.normalize_diseases import normalize_diseases
+from paper2kb.write_output import save_output
+from paper2kb.db_utils import insert_mentions_to_db
 
 # ---------------- Page Config ----------------
 st.set_page_config(page_title="Paper2KB", layout="wide")

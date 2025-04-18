@@ -17,7 +17,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'paper2kb = src.cli:main',  # refers to src/cli.py's main()
+            'paper2kb = paper2kb.cli:main',  # refers to src/cli.py's main()
         ],
     },
     include_package_data=True,
