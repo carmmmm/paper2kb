@@ -136,6 +136,7 @@ paper2kb/
     Then edit it with your email.
 
     ```
+    nano .env
     ENTREZ_EMAIL=your@email.com
     ```
 
