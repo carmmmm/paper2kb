@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 
+# Ensure `src/` directory is in Python path so imports work from CLI and Streamlit
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = PROJECT_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
@@ -11,6 +12,7 @@ import time
 import streamlit as st
 import pandas as pd
 
+# Core extraction and I/O modules
 from paper2kb.io_utils import extract_text_from_pdf, load_text_source
 from paper2kb.fetch_paper import fetch_paper_text
 from paper2kb.extract_genes import extract_gene_disease_mentions, load_hgnc_reference
@@ -20,37 +22,37 @@ from paper2kb.normalize_diseases import normalize_diseases
 from paper2kb.write_output import save_output
 from paper2kb.db_utils import insert_mentions_to_db
 
-# ---------------- Page Config ----------------
+# Streamlit app setup
 st.set_page_config(page_title="Paper2KB", layout="wide")
 st.title("Paper2KB: Paper to KnowledgeBase — Extract Structured Knowledge from Biomedical Papers")
 
-# ---------------- Reset Button ----------------
+# Reset session state
 with st.sidebar:
     if st.button("🔄 RESET for New Paper"):
         for key in list(st.session_state.keys()):
             del st.session_state[key]
         st.rerun()
 
-# ---------------- App Info ----------------
+# App description block
 with st.expander("ℹ️ About Paper2KB", expanded=False):
     st.markdown("""
     **Paper2KB** extracts gene-disease associations from biomedical texts using hybrid NLP and HGNC data enrichment.  
     You can analyze a paper, customize your export, and download structured JSON/CSV.
     """)
 
-# ---------------- Load HGNC Once ----------------
+# Load HGNC reference table once per session
 if "hgnc_loaded" not in st.session_state:
     load_hgnc_reference("data/reference/hgnc_complete_set.txt")
     st.session_state.hgnc_loaded = True
 
-# ---------------- Extraction Settings ----------------
+# Toggle for hybrid vs ML-only extraction mode
 use_hybrid = st.toggle(
     "🧠 Use Hybrid Extraction (NER + HGNC fallback)",
     value=True,
     help="Improves recall by falling back to curated HGNC terms when NER misses gene names."
 )
 
-# ---------------- Input Section ----------------
+# --- Input options: PMID / Text / PDF ---
 st.subheader("📥 Input a Paper")
 input_method = st.radio("Choose Method", ["PMID", "Text Input", "PDF Upload"], horizontal=True)
 
@@ -78,7 +80,7 @@ elif input_method == "PDF Upload":
             text = extract_text_from_pdf(uploaded_pdf)
             source = "PDF upload"
 
-# ---------------- Inspect SQLite Database ----------------
+# --- View existing database contents ---
 with st.expander("📂 View SQLite DB contents", expanded=False):
     if st.button("🔎 Show latest HGNC gene + disease links"):
         import sqlite3
@@ -100,7 +102,7 @@ with st.expander("📂 View SQLite DB contents", expanded=False):
         else:
             st.warning("No data found in gene_disease table.")
 
-# ---------------- Processing Pipeline ----------------
+# --- Main Processing Pipeline ---
 if fetch_button and text:
     start = time.time()
 
@@ -131,6 +133,7 @@ if fetch_button and text:
         mentions = normalize_diseases(mentions)
         st.info(f"⏱️ Disease normalization took {time.time() - t0:.2f}s")
 
+    # Store intermediate results in session state
     st.session_state.mentions = mentions
     st.session_state.skipped = skipped
     st.session_state.source = source
@@ -138,7 +141,7 @@ if fetch_button and text:
 
     st.success(f"✅ Extracted {len(mentions)} mentions (Total runtime: {time.time() - start:.2f}s)")
 
-# ---------------- Display + Export ----------------
+# --- Display, Filter, Export, and Save ---
 if "mentions" in st.session_state:
     mentions = st.session_state.mentions
     skipped = st.session_state.get("skipped", [])
@@ -173,15 +176,15 @@ if "mentions" in st.session_state:
         with st.expander(f"⚠️ {len(skipped)} Skipped Genes", expanded=False):
             st.code("\n".join(sorted(set(skipped))))
 
-    # ---------------- Insertion Mode Toggle ----------------
+    # --- Optional Insertion into SQLite DB ---
     insertion_mode = st.radio(
         "🧬 Insertion Mode",
         ["Preview Only", "Preview + Save to DB"],
         help="Choose whether to only preview the selected mentions, or also write them to the database."
     )
 
-    # --- Utility: clean semi-colon strings or list into clean list ---
     def split_safe(val):
+        """Convert semicolon-delimited strings into a clean list."""
         if isinstance(val, list):
             return val
         if isinstance(val, str):
@@ -189,6 +192,7 @@ if "mentions" in st.session_state:
         return []
 
     def prepare_db_insert_data(df):
+        """Clean selected rows and prepare them for insertion into the SQLite database."""
         mentions_to_insert = df.to_dict(orient="records")
         cleaned = []
         for item in mentions_to_insert:

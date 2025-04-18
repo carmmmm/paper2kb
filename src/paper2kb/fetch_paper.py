@@ -6,17 +6,47 @@ from bs4 import BeautifulSoup
 from Bio import Entrez
 import requests
 
-# Set your email for NCBI Entrez
+# ----------------------------------------
+# Configuration
+# ----------------------------------------
+
+# Use email for NCBI Entrez API (set via .env or fallback)
 Entrez.email = os.environ.get("ENTREZ_EMAIL", "example@example.com")
 
+# ----------------------------------------
+# Text Retrieval Functions
+# ----------------------------------------
+
 def fetch_paper_text(pmid: str, prefer_fulltext: bool = True, return_source: bool = False) -> str | tuple:
+    """
+    Attempt to fetch the full text of a biomedical paper using a PubMed ID (PMID).
+
+    Tries the following sources in order:
+        1. NCBI PMC (PubMed Central) via PMCID
+        2. Europe PMC
+        3. Entrez abstract fallback
+
+    Args:
+        pmid (str): The PubMed ID of the paper.
+        prefer_fulltext (bool): Whether to prioritize full text (always True in current usage).
+        return_source (bool): If True, return a tuple (text, source) instead of just text.
+
+    Returns:
+        str or tuple: Retrieved text (and optionally source).
+
+    Raises:
+        RuntimeError: If text retrieval fails from all sources.
+    """
     logging.info(f"📥 Attempting full-text retrieval for PMID: {pmid}")
 
-    # Step 1: Try PubMed Central (PMC) full text via PMCID
+    # -------------------------------
+    # Step 1: Try NCBI PMC Full Text
+    # -------------------------------
     try:
         handle = Entrez.elink(dbfrom="pubmed", db="pmc", id=pmid, linkname="pubmed_pmc")
         records = Entrez.read(handle)
         links = records[0].get("LinkSetDb", [])
+
         for db in links:
             for link in db["Link"]:
                 pmcid = link["Id"]
@@ -31,7 +61,9 @@ def fetch_paper_text(pmid: str, prefer_fulltext: bool = True, return_source: boo
     except Exception as e:
         logging.warning(f"NCBI PMC full text fetch failed: {e}")
 
-    # Step 2: Try Europe PMC full text
+    # -------------------------------
+    # Step 2: Try Europe PMC Full Text
+    # -------------------------------
     try:
         epmc_url = f"https://www.ebi.ac.uk/europepmc/webservices/rest/{pmid}/fullTextXML"
         response = requests.get(epmc_url)
@@ -45,7 +77,9 @@ def fetch_paper_text(pmid: str, prefer_fulltext: bool = True, return_source: boo
     except Exception as e:
         logging.warning(f"Europe PMC fetch failed: {e}")
 
-    # Step 3: Fallback to Entrez abstract
+    # -------------------------------
+    # Step 3: Fallback to Entrez Abstract
+    # -------------------------------
     try:
         handle = Entrez.efetch(db="pubmed", id=pmid, rettype="abstract", retmode="text")
         abstract = handle.read()
@@ -55,10 +89,22 @@ def fetch_paper_text(pmid: str, prefer_fulltext: bool = True, return_source: boo
     except Exception as e:
         logging.warning(f"Entrez fetch failed: {e}")
 
+    # If nothing worked
     raise RuntimeError(f"Unable to retrieve text for PMID {pmid}")
 
 def fetch_local_text(filepath: str) -> Optional[str]:
-    """Optional dev/test helper to read a local file instead of fetching live."""
+    """
+    Load local text from a file. Used for offline testing or development.
+
+    Args:
+        filepath (str): Path to the .txt file.
+
+    Returns:
+        str: File contents, stripped of leading/trailing whitespace.
+
+    Raises:
+        FileNotFoundError: If the file doesn't exist.
+    """
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"No such file: {filepath}")
     with open(filepath, 'r', encoding='utf-8') as f:

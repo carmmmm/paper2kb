@@ -3,10 +3,17 @@ from pathlib import Path
 
 @pytest.fixture
 def example_text():
+    """
+    Sample biomedical sentence used in unit tests for NER and disease association.
+    """
     return "The MTOR gene is associated with tubulopathy and dilated cardiomyopathy."
 
 @pytest.fixture
 def sample_mention():
+    """
+    Example mention dictionary simulating a fully enriched gene-disease entry.
+    Used in tests for output formatting, database insertion, etc.
+    """
     return {
         "symbol": "MTOR",
         "original_mention": "MTOR",
@@ -21,5 +28,7 @@ def sample_mention():
         "hg19_chr": "1",
         "hg19_start": 11166592,
         "hg19_end": 11166593,
-        "normalized_diseases": [{"label": "Tubulopathy", "mondo_id": "MONDO:0012345"}]
+        "normalized_diseases": [
+            {"label": "Tubulopathy", "mondo_id": "MONDO:0012345"}
+        ]
     }

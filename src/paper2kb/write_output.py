@@ -4,12 +4,15 @@ from pathlib import Path
 
 def save_output(data, path, fmt="json"):
     """
-    Save structured output as JSON or CSV.
+    Save structured gene-disease data to disk in either JSON or CSV format.
 
     Args:
-        data (list[dict]): Cleaned gene-disease entries.
+        data (list[dict]): List of dictionaries containing enriched gene-disease info.
         path (str or Path): Output file path.
-        fmt (str): 'json' or 'csv'.
+        fmt (str): Format to write ('json' or 'csv').
+
+    Raises:
+        ValueError: If the format is not one of the supported options.
     """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -24,6 +27,11 @@ def save_output(data, path, fmt="json"):
 
     elif fmt == "csv":
         def flatten_value(val):
+            """
+            Normalize nested values for CSV output:
+            - Lists of strings are joined with '; '
+            - Lists of dicts (e.g., normalized diseases) are formatted as label (MONDO)
+            """
             if isinstance(val, list):
                 if all(isinstance(x, str) for x in val):
                     return "; ".join(val)
@@ -34,11 +42,9 @@ def save_output(data, path, fmt="json"):
                     )
             return val
 
-        flat_data = []
-        for item in data:
-            flat_data.append({k: flatten_value(v) for k, v in item.items()})
-
+        flat_data = [{k: flatten_value(v) for k, v in item.items()} for item in data]
         fieldnames = flat_data[0].keys()
+
         with open(path, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()

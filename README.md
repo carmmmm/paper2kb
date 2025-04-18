@@ -11,6 +11,11 @@ genomic coordinates, and MONDO-normalized disease concepts, producing clean, str
 outputs ready for downstream analysis, database integration, and clinical curation workflows.
 
 ---
+## 📺 Video Tutorial 
+
+
+
+---
 
 ## 🚀 What It Does
 
@@ -60,31 +65,37 @@ outputs ready for downstream analysis, database integration, and clinical curati
 ```bash
 paper2kb/
 ├── data/
-│   ├── outputs/               # Saved JSON/CSV and skipped genes
-│   └── reference/             # HGNC reference files
+│   ├── outputs/                  # Extracted outputs and generated database
+│   │   └── example_output.csv
+│   └── reference/                # HGNC reference files
 ├── scripts/
-│   ├── outputs/
-│   │   └── paper2kb.db     #Auto-generated SQLite knowledgebase from gene-disease metadata
-│   │── run_pipeline.sh     # Optional bash runner
-│   └── update_hgnc.py      # Refresh HGNC reference
-│── sql/
-│   ├── schema.sql          # SQLite schema
-│   ├── sample_queries.sql  # Example queries
-│   └── schema_diagram.png  # Schema ER diagram
+│   ├── outputs/                  # DB generator output
+│   │   └── paper2kb.db
+│   ├── load_sqlite_db.py         # Script to load output into SQLite
+│   ├── run_pipeline.sh           # Optional shell runner
+│   └── update_hgnc.py            # Fetch latest HGNC data
+├── sql/
+│   ├── schema.sql                # SQLite schema definition
+│   ├── sample_queries.sql        # SQL examples for querying data
+│   └── schema_diagram.png        # Entity-relationship diagram
 ├── src/
-│   ├── cli.py                 # CLI entry point
-│   ├── extract_genes.py       # NER + fallback logic
-│   ├── fetch_paper.py         # Text retrieval
-│   ├── get_hgnc_metadata.py   # HGNC metadata enrichment
-│   ├── get_coordinates.py     # Ensembl coordinate lookup
-│   ├── normalize_diseases.py  # MONDO normalization
-│   ├── io_utils.py            # Text loading, output path inference
-│   ├── write_output.py        # CSV/JSON export
-│   ├── opentargets_utils.py   # Disease links (fallback)
-│   └── db_utils.py            # Database insert functions
+│   └── paper2kb/
+│       ├── __init__.py
+│       ├── cli.py                # CLI entry point
+│       ├── db_utils.py           # SQLite insert logic
+│       ├── extract_genes.py      # NER + fallback extraction
+│       ├── fetch_paper.py        # Text retrieval (PMID/PDF/Raw)
+│       ├── get_coordinates.py    # Ensembl + liftover genomic coords
+│       ├── get_hgnc_metadata.py  # HGNC metadata enrichment
+│       ├── io_utils.py           # Text loading + inference
+│       ├── normalize_diseases.py # MONDO term mapping
+│       ├── opentargets_utils.py  # Fallback gene-disease links
+│       └── write_output.py       # JSON/CSV writer
 ├── streamlit_app/
-│   └── app.py                 # Interactive Streamlit app
+│   └── app.py                    # Interactive UI
 ├── tests/
+│   ├── __init__.py
+│   ├── conftest.py
 │   ├── test_end_to_end.py
 │   ├── test_extract_genes.py
 │   ├── test_fetch_paper.py
@@ -93,14 +104,12 @@ paper2kb/
 │   ├── test_normalize_diseases.py
 │   ├── test_write_output.py
 │   └── tests_cli.py
-├── .env                      # Local secrets (excluded)
-├── .env.example             # Template for .env
-├── .gitignore               # See below
-├── environment.yml          # Conda env file
-├── requirements.txt         # pip dependencies
-├── pyproject.toml           # Package metadata
-├── setup.py                 # Editable pip install config
-└── README.md
+├── .env.example                 # Sample environment config
+├── environment.yml             # Conda environment (if applicable)
+├── requirements.txt            # pip install dependencies
+├── setup.py                    # pip-installable package config
+├── pyproject.toml              # Project metadata and build system
+└── README.md                   # Overview and usage guide
 ```
 
 ### First Steps
