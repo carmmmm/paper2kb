@@ -187,13 +187,15 @@ Now you must decide whether you want to access via the StreamLit App or the CLI.
    - Select rows + columns 
    - Export to CSV/JSON 
    - Optionally insert into SQLite DB
-    <img width="647" alt="Screenshot 2025-04-18 at 12 18 45 AM" src="https://github.com/user-attachments/assets/cdef9800-b1bc-440c-93a8-  da84a5099dac" />
+  <img width="647" alt="Screenshot 2025-04-18 at 12 18 45 AM" src="https://github.com/user-attachments/assets/ecbf43aa-11f5-49e6-a50d-df14fe2c1b19" />
+
+     
 
 4. Database Preview 
    - View DB contents via sidebar 
    - Confirm gene/disease links visually
 
-    
+
 ### 💻 From the CLI
 
 Run a complete extraction pipeline directly from the terminal:
