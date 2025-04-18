@@ -10,6 +10,8 @@ recognition and HGNC-backed matching. It enriches results with official gene met
 genomic coordinates, and MONDO-normalized disease concepts, producing clean, structured 
 outputs ready for downstream analysis, database integration, and clinical curation workflows.
 
+<img width="956" alt="Screenshot 2025-04-18 at 12 19 08 AM" src="https://github.com/user-attachments/assets/17b8a836-37b6-461b-ae96-e5a80b4ba858" />
+
 ---
 ## 📺 Video Tutorial 
 
@@ -185,6 +187,7 @@ Now you must decide whether you want to access via the StreamLit App or the CLI.
    - Select rows + columns 
    - Export to CSV/JSON 
    - Optionally insert into SQLite DB
+    <img width="647" alt="Screenshot 2025-04-18 at 12 18 45 AM" src="https://github.com/user-attachments/assets/cdef9800-b1bc-440c-93a8-  da84a5099dac" />
 
 4. Database Preview 
    - View DB contents via sidebar 
