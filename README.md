@@ -206,6 +206,12 @@ Now you must decide whether you want to access via the StreamLit App or the CLI.
 
 ### 💻 From the CLI
 
+Before using the `paper2kb` CLI command, make sure you've installed the project in editable mode:
+
+```
+pip install -e .
+```
+
 Run a complete extraction pipeline directly from the terminal:
 
 ```
