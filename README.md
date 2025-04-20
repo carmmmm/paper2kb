@@ -116,7 +116,7 @@ paper2kb/
 ```
 
 ### First Steps
- 1. First, clone Paper2KB to your local machine. Make sure you have Python 3.10 installed.
+ 1. First, clone Paper2KB to your local machine. This project requires Python 3.10—it is not compatible with 3.11 or above due to dependency constraints (e.g. spaCy and SciSpacy models).
 
         ```
         git clone https://github.com/yourusername/paper2kb.git
