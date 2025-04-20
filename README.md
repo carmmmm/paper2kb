@@ -116,7 +116,7 @@ paper2kb/
 ```
 
 ### First Steps
- 1. First, clone Paper2KB to your local machine. Make sure you have Python 3.10+ installed.
+ 1. First, clone Paper2KB to your local machine. Make sure you have Python 3.10 installed.
 
         ```
         git clone https://github.com/yourusername/paper2kb.git
@@ -127,7 +127,7 @@ paper2kb/
     OPTION 1: With pip + virtualenv
 
     ```
-    python -m venv .venv310
+    python3.10 -m venv .venv310
     source .venv310/bin/activate
     pip install -r requirements.txt
     ```

@@ -1,3 +1,21 @@
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "paper2kb"
+version = "0.1.0"
+description = "Extract gene-disease metadata from biomedical literature"
+authors = [
+    { name = "Carmen Montero" }
+]
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+
+dependencies = []
+
+[tool.setuptools]
+packages = ["src"]
+
+[project.scripts]
+paper2kb = "src.cli:main"
