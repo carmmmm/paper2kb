@@ -11,11 +11,13 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.10,<3.11"
-
-dependencies = []
-
-[tool.setuptools]
-packages = ["src"]
+dependencies = []  # requirements.txt used separately
 
 [project.scripts]
-paper2kb = "src.cli:main"
+paper2kb = "paper2kb.cli:main"
+
+[tool.setuptools]
+packages = ["paper2kb"]
+
+[tool.setuptools.package-dir]
+"" = "src"
